@@ -2,12 +2,16 @@
 Assert Objectscript is a supplemental assertion library meant to enhance readability of resulting test failures. 
 
 Instead of this
-```
-TODO
+```objectscript
+AssertEquals:objectA== objectB was '6@%Library.DynamicObject'
 ```
 you will get this
-```
-TODO
+```objectscript
+AssertFailure:
+    Expected:
+%DynamicObject(value: Foo)
+    to be equal to:
+%DynamicObject(value: Bar)
 ```
 The goal of this library is to provide the developer with enough information to find the reason for a test failure without the need to debug the code.
 
@@ -39,6 +43,10 @@ set objectAssertBuilder = builder.ThatActualArray(object)
 ```
 
 ### Configuraion
+Once constructed, you can configure your assertion. For example, you could:
+1. Use field by field comparison instead of object equality ``UsingFieldByFieldComparison()``
+2. Ignore array order ``IgnoringOrder()``
+3. Ignore a certain field during field by field comparsion ``IgnoringField("ID")``
 
 ### Assertion
 
@@ -64,3 +72,12 @@ Method Assert() As hbt.utility.testing.AssertBuilder
 | Check if an object is `not defined                                                  | ``do ..Assert().ThatActualObject(object).IsNotDefined()``                                   |
 | Check if two objects are equal                                                      | ``do ..Assert().ThatActualObject(objectA).IsEqualTo(objectB)``                              |
 | Check if two objects are equal by comparing each field individually and recursively | ``do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison()IsEqualTo(objectB)`` |
+
+
+# Limitations and Planned Improvements
+1. Currently only tested on dynamic objects and dynmaic arrays. Should work for normal objects and lists, too (to be tested)
+2. Only works in context of UnitTest
+3. Not many assertions implemented yet
+4. badly formatted dynamic objects
+5. badly formatted error messages (room for improvement here)
+6. Assertions on basic types (%Integer, %String) not implemented yet
