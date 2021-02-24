@@ -1,0 +1,1 @@
+docker-compose exec iris bash -c "iris session IRIS </irisdev/app/run-tests-in-iris.script"

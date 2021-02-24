@@ -1,0 +1,4 @@
+    Zn "IRISAPP"
+    Set ^UnitTestRoot="/irisdev/app/src"
+    do ##class(%UnitTest.Manager).RunTest("tests","/loadudl")
+ 
