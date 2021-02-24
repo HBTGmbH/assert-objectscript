@@ -1,81 +1,66 @@
-## objectscript-package-template
-This is a template for InterSystems ObjectScript class package which is planned to be published into [ZPM registry](https://pm.community.intersystems.com/packages/-/all).
-[Learn more on Community Package Manager (ZPM)](https://community.intersystems.com/post/introducing-intersystems-objectscript-package-manager)
+# Assert Objectscript
+Assert Objectscript is a supplemental assertion library meant to enhance readability of resulting test failures. 
 
-## repo structure
-1. put ObjectScript classes under /src folder in form
-/cls - classes
-/inc - includes
-/mac - mac routines
-/int - int routines
-/gbl - globals
-
-2. Place module.xml file in the root of the repo. Learn more about [module.xml format](https://community.intersystems.com/post/anatomy-zpm-module-packaging-your-intersystems-solution)
-
-
-## Naming convention
-Each folder under /cls corresponds to Class package.
-first folder/package is the organisatoin or developer name.
-second level is the project name
-third is class or sub-package
-E.g. this repo contains a simple example of ObjectScript class for the repository published in [Developers Community github](https://github.com/intersystems-community/objectscript-package-template)
-The organisation is intersystems-community, and the corresponding package name is 'community'.
-The repo is objectscript-package-template and the subpackage name for this repo is 'objectscript'
-
-## Installation 
-
-Clone/git pull the repo into any local directory
-
+Instead of this
 ```
-$ git clone https://github.com/your-repository.git
+TODO
 ```
-
-Open the terminal in this directory and run:
-
-
+you will get this
 ```
-$ docker-compose up -d
+TODO
+```
+The goal of this library is to provide the developer with enough information to find the reason for a test failure without the need to debug the code.
+
+# Installation
+<TODO: Brief guide on how to use the ZPM package manager as soon as it's published>
+
+# Usage
+## General Usage
+Assert-Objectscript uses a builder pattern to construct an assertion. It consists of these steps
+1. Construct the assertion builder
+2. Configure the assertion builder
+3. Finish with an assertion
+
+Each assert follows this in the fashion of ``assert...thatActual...isEqualTo``
+
+### Construction
+Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start
+any assertion like this.
+
+```objectscript
+set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
 ```
 
-## How to Test it
+From there on, you have the choice between an assert on on object or array.
 
-Open IRIS terminal:
-
+```objectscript
+set arrayAssertBuilder = builder.ThatActualObject(object)
+set objectAssertBuilder = builder.ThatActualArray(object)
 ```
-$ docker-compose exec iris iris session iris
-USER>zn "IRISAPP"
-IRISAPP>write ##class(community.objectscript.ClassExample).Test()
+
+### Configuraion
+
+### Assertion
+
+Lastly, you need to finish with an assertion.
+```objectscript
+builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcted)
 ```
-## How to start coding
-This repository is ready to code in VSCode with ObjectScript plugin.
-Install [VSCode](https://code.visualstudio.com/) and [ObjectScript](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript) plugin and open the folder in VSCode.
-Open /src/cls/PackageSample/ObjectScript.cls class and try to make changes - it will be compiled in running IRIS docker container.
 
-Feel free to delete PackageSample folder and place your ObjectScript classes in a form
-/src/cls/Package/Classname.cls
+### Overview of Assertions
 
-The script in Installer.cls will import everything you place under /src/cls into IRIS.
+All example assume that this method exists to shorten
+the actual assert. You could, of course, register a macro for that, too.
+```objectscript
+Method Assert() As hbt.utility.testing.AssertBuilder
+{
+    return ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+}
+```
 
-## What's insde the repo
-
-# Dockerfile
-
-The simplest dockerfile which starts IRIS and imports Installer.cls and then runs the Installer.setup method, which creates IRISAPP Namespace and imports ObjectScript code from /src folder into it.
-Use the related docker-compose.yml to easily setup additional parametes like port number and where you map keys and host folders.
-Use .env/ file to adjust the dockerfile being used in docker-compose.
-It also installs ZPM - ObjectScript Package Manager client
-
-# module.xml
-
-This file describes project to be installed as package in ObjectScript Package Manager. You can test your module.xml with following commands:
-// load the source code of the package as it is described in module.xml
-IRISAPP:zpm>load /irisdev/app
-// run the package installer test
-IRISAPP:zpm>objectscript-package-template package -v
-
-# .vscode/settings.json
-
-Settings file to let you immedietly code in VSCode with [VSCode ObjectScript plugin](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript))
-
-# .vscode/launch.json
-Config file if you want to debug with VSCode ObjectScript
+| Description                                                                         | Code                                                                                        |
+|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| Check if an object is defined                                                       | ``do ..Assert().ThatActualObject(object).IsDefined()``                                      |
+| Check if an object is `not defined                                                  | ``do ..Assert().ThatActualObject(object).IsNotDefined()``                                   |
+| Check if two objects are equal                                                      | ``do ..Assert().ThatActualObject(objectA).IsEqualTo(objectB)``                              |
+| Check if two objects are equal by comparing each field individually and recursively | ``do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison()IsEqualTo(objectB)`` |
