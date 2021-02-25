@@ -73,6 +73,23 @@ Method Assert() As hbt.utility.testing.AssertBuilder
 | Check if two objects are equal                                                      | ``do ..Assert().ThatActualObject(objectA).IsEqualTo(objectB)``                              |
 | Check if two objects are equal by comparing each field individually and recursively | ``do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison()IsEqualTo(objectB)`` |
 
+# Compiling and Building
+
+To compile, build and upload to ZPM, follow these steps:
+
+1. Start the compose instance ``docker-compose up -d``
+2. Exec yourself into the container with an IRIS instance ``./open-iris-session.bat``(or ``./open-iris-session.sh`` on Linux)
+3. Go to ZPM terminal ``zpm``
+4. Load the source files into ZPM ``load /irisdev/app``
+5. Verify the MWL package ``assert-objectscript package -v``
+6. Set the registry to our ZPM registry ``repo -n registry -r -url <registry> -user <user> -pass <pass>`` (Make sure your registry url ends with a trailing /)
+7. Publish the package ``assert-objectscript -v publish``
+
+
+# Links
+* [Describing a module with ZPM](https://community.intersystems.com/post/describing-modulexml-objectscript-package-manager)
+* [Setting up your own ZPM registry](https://community.intersystems.com/post/setting-your-own-intersystems-objectscript-package-manager-registry)
+
 
 # Limitations and Planned Improvements
 1. Currently only tested on dynamic objects and dynmaic arrays. Should work for normal objects and lists, too (to be tested)

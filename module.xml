@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="hbt-iris-testlib.ZPM">
+  <Document name="assert-objectscript.ZPM">
     <Module>
       <Name>assert-objectscript</Name>
-      <Version>0.1</Version>
+      <Description>Assertion library for ObjectScript</Description>
+      <Version>1.0.0</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="hbt.utility.testing.PKG"/>

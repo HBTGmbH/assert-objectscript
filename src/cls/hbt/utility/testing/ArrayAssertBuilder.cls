@@ -126,17 +126,17 @@ Method AssertKeepingOrder() [ Private ]
     while expectedIterator.%GetNext(.key, .value) {
         set otherValue = ..Actual.%Get(key)
         If ('($DATA(otherValue))) || (otherValue = "") {
-            set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-            set expectedAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)
+            set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)_$$$NL
+            set expectedAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)_$$$NL
             set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
             set msg = "Expected "_expectedAsString_" to equal "_actualAsString_" but did not find "_missingAsString_" at index "_key
             do ..TestContext.AssertFailureViaMacro(msg)
         } elseif '(..Comparator.areEqual(value, otherValue)) {
-            set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-            set expectedAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)
+            set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)_$$$NL
+            set expectedAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)_$$$NL
             set expectedValueString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
             set actualValueString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(otherValue)
-            set msg = "Expected "_actualAsString_" to equal "_expectedAsString_" but element at index "_key_" mismatches:"_$$$NL
+            set msg = $$$NL_"   Expected "_actualAsString_"    to equal "_expectedAsString_"    but element at index "_key_" mismatches:"_$$$NL
             set msg = msg_"Expected "_expectedValueString_" to equal "_actualValueString
             do ..TestContext.AssertFailureViaMacro(msg)
         }
@@ -144,7 +144,7 @@ Method AssertKeepingOrder() [ Private ]
     Quit $$$OK
 }
 
-Method isEqualTo(expected As %DynamicArray) As hbt.utility.testing.ArrayAssertBuilder
+Method ToEqual(expected As %DynamicArray) As hbt.utility.testing.ArrayAssertBuilder
 {
   
     set ..Expected = expected
@@ -157,15 +157,14 @@ Method isEqualTo(expected As %DynamicArray) As hbt.utility.testing.ArrayAssertBu
     return $$$OK
 }
 
-/// Description
 Method ToContain(value) As %Status
 {
     do ..InitComparator()
     If '(..IsContainedInArray(..Actual, value)) {
-        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-        set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
-        set msg = "Expected "_actualAsString_" to contain "_missingAsString
-        do ..TestContext.AssertFailureViaMacro(msg)
+        Set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
+        Set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+        Set msg = $$$NL_"   Expected "_$$$NL_actualAsString_$$$NL_"   to contain "_$$$NL_missingAsString_$$$NL_$$$NL
+        Do ..TestContext.AssertFailureViaMacro(msg)
     }
     return $$$OK
 }
@@ -176,7 +175,40 @@ Method NotToContain(value) As %Status
     If (..IsContainedInArray(..Actual, value)) {
         set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
         set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
-        set msg = "Expected "_actualAsString_" not to contain "_missingAsString
+        Set msg = $$$NL_"   Expected "_$$$NL_actualAsString_$$$NL_"   not to contain "_$$$NL_missingAsString_$$$NL_$$$NL
+        do ..TestContext.AssertFailureViaMacro(msg)
+    }
+    return $$$OK
+}
+
+Method HasSize(expectedSize As %Integer) As %Status
+{
+    set actualSize = ..Actual.%Size()
+    If '(actualSize = expectedSize) {
+        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        set msg = $$$NL_"   Expected "_$$$NL_actualAsString_":"_$$$NL_"    To have size "_expectedSize_" but was "_actualSize_$$$NL_$$$NL
+        do ..TestContext.AssertFailureViaMacro(msg)
+    }
+    return $$$OK
+}
+
+Method ToBeEmpty() As %Status
+{
+    set actualSize = ..Actual.%Size()
+    If '(actualSize = 0) {
+        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        set msg = $$$NL_"   Expected "_$$$NL_actualAsString_":"_$$$NL_"    To be empty but has "_actualSize_ "elements" _$$$NL_$$$NL
+        do ..TestContext.AssertFailureViaMacro(msg)
+    }
+    return $$$OK
+}
+
+Method NotToBeEmpty() As %Status
+{
+    set actualSize = ..Actual.%Size()
+    If (actualSize = 0) {
+        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        set msg = $$$NL_"   Expected "_$$$NL_actualAsString_":"_$$$NL_"    Not to be empty but has "_actualSize_ "elements" _$$$NL_$$$NL
         do ..TestContext.AssertFailureViaMacro(msg)
     }
     return $$$OK
