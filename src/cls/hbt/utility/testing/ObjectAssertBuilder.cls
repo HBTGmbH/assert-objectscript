@@ -65,12 +65,23 @@ Method InitComparator() As %Status [ Private ]
 /// Description
 Method IsDefined() As %Status
 {
-    Write !,!,..Actual
     if (..Actual = $$$NULLOREF) {
         set msg = "Expected actual value to be defined"
         do ..TestContext.AssertFailureViaMacro(msg)
     }
     return $$$OK
+}
+
+/// Description
+Method ToHaveProperty(key As %String) As %Status
+{
+    set isDefined = ..Actual.%IsDefined(key)
+    if 'isDefined {
+        set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
+        set msg = "   Expected"_actualAsString_"   to have the property "_key
+        do ..TestContext.AssertFailureViaMacro(msg)
+    }
+    Return $$$OK
 }
 
 /// Description
@@ -90,8 +101,8 @@ Method IsEqualTo(expected) As %Status
     do ..InitComparator()
     If '(..Comparator.areEqual(..Actual, expected)) {
         set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
-        set expectedAsString =  $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(expected)_$$$NL
-        set msg = $$$NL_"    Expected:"_actualAsString_"    to be equal to:"_expectedAsString
+        set expectedAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(expected)_$$$NL
+        set msg = "   Expected:"_actualAsString_"   to be equal to:"_expectedAsString_$$$NL
         do ..TestContext.AssertFailureViaMacro(msg)
     }
     Return $$$OK

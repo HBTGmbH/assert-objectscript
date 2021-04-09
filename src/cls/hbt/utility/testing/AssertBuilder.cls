@@ -24,4 +24,12 @@ Method ThatActualObject(actual As %DynamicObject) As hbt.utility.testing.ObjectA
     return builder
 }
 
+/// Description
+Method ThatActualList(actual As %SystemBase) As %Status
+{
+    Set sc = $$$OK
+    // do something
+    Return sc
+}
+
 }
