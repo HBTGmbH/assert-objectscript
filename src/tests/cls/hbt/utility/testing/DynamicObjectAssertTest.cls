@@ -24,7 +24,7 @@ Method TestSHouldPassWithUndefinedObjectForUndefinedCheck() As %Status
 Method TestShouldPassWithEqualObjects() As %Status
 {
      set object = {"value": "ABC"}
-     do ..Assert().ThatActualObject(object).IsEqualTo({"value": "ABC"})
+     do ..Assert().ThatActualObject(object).IsEqualTo(object)
 }
 
 Method TestShouldPassWithEqualObjectsUsingFieldByFieldComparison() As %Status

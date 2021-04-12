@@ -10,9 +10,9 @@ Method Assert() As %Status
 /// Description
 Method TestShouldCompareListsForEquality() As %Status
 {
-    set listA = $listbuild("A", "B", "C")
-    set listB = $listbuild("A", "B", "C")
-    do ..Assert().ThatActualList(listA).isEqualTo(listB)
+    #; set listA = $listbuild("A", "B", "C")
+    #; set listB = $listbuild("A", "B", "C")
+    #; do ..Assert().ThatActualList(listA).isEqualTo(listB)
 }
 
 }
