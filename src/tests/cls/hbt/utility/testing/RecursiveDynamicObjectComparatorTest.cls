@@ -110,4 +110,21 @@ Method TestWithIgnoredFieldsShouldBeEqual() As %Status
     Do $$$AssertTrue(areEqual, " Expected "_objectAString_" to equal "_objectBString)
 }
 
+/// T
+Method TestWithNormalSimpleObjectShouldBeEqual() As %Status
+{
+    set inner = ##class(hbt.utility.testing.data.DummyTestClass).%New()
+    set inner.TestProperty = "Value"
+    set objectA = ##class(hbt.utility.testing.data.NestedDummyTestClass).%New()
+    set objectA.NestedObj = inner
+    set objectB = ##class(hbt.utility.testing.data.NestedDummyTestClass).%New()
+    set objectB.NestedObj = inner
+    Set comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set areEqual = comparator.areEqual(objectA, objectB)
+    Set objectAString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(objectA)
+    Set objectBString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(objectB)
+    Do $$$AssertTrue(areEqual, " Expected "_objectAString_" to equal "_objectBString)
+    return $$$OK
+}
+
 }

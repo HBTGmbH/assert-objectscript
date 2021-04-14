@@ -46,7 +46,7 @@ Method isContainedInArray(arr As %DynamicArray, referenceValue As %DynamicObject
 }
 
 /// Description
-Method areEqualObjects(expected As %DynamicObject, actual As %DynamicObject) As %Boolean
+Method areEqualDynamicObjects(expected As %DynamicObject, actual As %DynamicObject) As %Boolean
 {
     Set expectedIterator = expected.%GetIterator()
     // Make sure each value in 'actual' is represented as the same value in 'expected'
@@ -65,6 +65,38 @@ Method areEqualObjects(expected As %DynamicObject, actual As %DynamicObject) As 
             Set expectedValue = expected.%Get(key)
             If '(..areEqual(value, expectedValue)) {
                 Return 0
+            }
+        }
+       
+    }
+    Return 1
+}
+
+/// Description
+Method areEqualObjects(expected As %SystemBase, actual As %SystemBase) As %Status
+{
+    // Array of {key: "<prop-name>", value: <prop-value>}
+    set expcetedProperties =  ##class(hbt.utility.testing.PropertyUtil).GetProperties(expected)
+    set acutalProperties =  ##class(hbt.utility.testing.PropertyUtil).GetProperties(actual)
+    set expectedIterator = expcetedProperties.%GetIterator()
+    set actualIterator = acutalProperties.%GetIterator()
+    // Make sure each value in 'actual' is represented as the same value in 'expected'
+    While expectedIterator.%GetNext(.key, .value) {
+        If '(..IsFieldIgnored(value.key)) {
+            // Since the data model is equal for both, we can use containedInArray here
+            set isContained = ..isContainedInArray(acutalProperties, value)
+            If '(isContained) {
+                return 0
+            }
+        }
+    }
+    Set actualIterator = acutalProperties.%GetIterator()
+    // Check for potentially superflous values in 'actual'
+    While actualIterator.%GetNext(.key, .value) {
+        If '(..IsFieldIgnored(key)) {
+            set isContained = ..isContainedInArray(expcetedProperties, value)
+            If '(isContained) {
+                return 0
             }
         }
        
@@ -152,11 +184,11 @@ Method areEqual(expected, actual) As %Boolean
            Return 0
        }
        If (expectedName = "%Library.DynamicObject") {
-           Return ..areEqualObjects(expected, actual)
+           Return ..areEqualDynamicObjects(expected, actual)
        } Elseif (expectedName="%Library.DynamicArray") {
             Return ..areEqualArrays(expected, actual)
        } Else {
-            Return expected = actual
+            Return ..areEqualObjects(expected, actual)
        }
     } Else {
         // We have a base type (number, boolean, string, etc). We use basic comparison
