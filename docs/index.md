@@ -1,8 +1,66 @@
-## Welcome to GitHub Pages
+## Assert-Objectscript
 
-You can use the [editor on GitHub](https://github.com/HBTGmbH/assert-objectscript/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Assert-Objectscriptm is a supplemental assertion library meant to enhance readability of resulting test failures.
+
+Instead of this
+```
+AssertEquals:objectA== objectB was '6@%Library.DynamicObject'
+```
+
+you will get this
+```
+AssertFailure:
+    Expected:
+%DynamicObject(value: Foo)
+    to be equal to:
+%DynamicObject(value: Bar)
+```
+
+## Basic Usage
+
+Assert-Objectscript uses a builder pattern to construct an assertion. It consists of these steps
+1. Construct the assertion builder
+2. Configure the assertion builder
+3. Finish with an assertion
+
+Each assert follows this in the fashion of ``assert...thatActual...is...``
+
+### Construction
+Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start
+any assertion like this.
+
+```objectscript
+set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+```
+
+From there on, you have the choice between an assert on on object or array.
+
+```objectscript
+set arrayAssertBuilder = builder.ThatActualObject(object)
+set objectAssertBuilder = builder.ThatActualArray(object)
+```
+
+### Configuraion
+Once constructed, you can configure your assertion. For example, you could:
+1. Use field by field comparison instead of object equality ``UsingFieldByFieldComparison()``
+2. Ignore array order ``IgnoringOrder()``
+3. Ignore a certain field during field by field comparsion ``IgnoringField("ID")``
+
+### Assertion
+
+Lastly, you need to finish with an assertion.
+```objectscript
+builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcted)
+```
+
+
+## Available Assertions
+### Dynamic Objects
+### Dynamic Arrays
+### Objects
+### Lists
+
 
 ### Markdown
 
