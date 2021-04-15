@@ -30,13 +30,13 @@ Each assert follows this in the fashion of ``assert...thatActual...is...``
 Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start
 any assertion like this.
 
-```objectscript
+```scala
 set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
 ```
 
 From there on, you have the choice between an assert on on object or array.
 
-```objectscript
+```scala
 set arrayAssertBuilder = builder.ThatActualObject(object)
 set objectAssertBuilder = builder.ThatActualArray(object)
 ```
@@ -50,7 +50,7 @@ Once constructed, you can configure your assertion. For example, you could:
 ### Assertion
 
 Lastly, you need to finish with an assertion.
-```objectscript
+```scala
 builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcted)
 ```
 
