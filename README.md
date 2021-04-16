@@ -2,7 +2,7 @@
 Assert Objectscript is a supplemental assertion library meant to enhance readability of resulting test failures. 
 
 Instead of this
-```ObjectScript
+```objectscript
 AssertEquals:objectA== objectB was '6@%Library.DynamicObject'
 ```
 you will get this
