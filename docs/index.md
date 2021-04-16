@@ -4,18 +4,23 @@
 Assert-Objectscriptm is a supplemental assertion library meant to enhance readability of resulting test failures.
 
 Instead of this
-```
+```ObjectScript
 AssertEquals:objectA== objectB was '6@%Library.DynamicObject'
 ```
 
 you will get this
-```
+```ObjectScript
 AssertFailure:
     Expected:
 %DynamicObject(value: Foo)
     to be equal to:
 %DynamicObject(value: Bar)
 ```
+
+## Limitations
+Assert-Objectscript started out as an assertion library for dynamic objects and arrays. As such, it is mostly intended to work with these two categories of objects in Intersystems.
+
+In general, it *should* work with almost any intersystems objects, excluding lists made with $listbuild. We would appreciate any form of feedback and also contributions to enhance this library to contain more assertions.
 
 ## Basic Usage
 
@@ -27,16 +32,15 @@ Assert-Objectscript uses a builder pattern to construct an assertion. It consist
 Each assert follows this in the fashion of ``assert...thatActual...is...``
 
 ### Construction
-Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start
-any assertion like this.
+Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start any assertion like this.
 
-```scala
+```ObjectScript
 set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
 ```
 
 From there on, you have the choice between an assert on on object or array.
 
-```scala
+```ObjectScript
 set arrayAssertBuilder = builder.ThatActualObject(object)
 set objectAssertBuilder = builder.ThatActualArray(object)
 ```
@@ -50,7 +54,7 @@ Once constructed, you can configure your assertion. For example, you could:
 ### Assertion
 
 Lastly, you need to finish with an assertion.
-```scala
+```ObjectScript
 builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcted)
 ```
 
@@ -61,35 +65,3 @@ builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcte
 ### Objects
 ### Lists
 
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/HBTGmbH/assert-objectscript/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.

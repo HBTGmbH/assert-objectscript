@@ -2,11 +2,11 @@
 Assert Objectscript is a supplemental assertion library meant to enhance readability of resulting test failures. 
 
 Instead of this
-```objectscript
+```ObjectScript
 AssertEquals:objectA== objectB was '6@%Library.DynamicObject'
 ```
 you will get this
-```objectscript
+```ObjectScript
 AssertFailure:
     Expected:
 %DynamicObject(value: Foo)
@@ -31,13 +31,13 @@ Each assert follows this in the fashion of ``assert...thatActual...isEqualTo``
 Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start
 any assertion like this.
 
-```objectscript
+```ObjectScript
 set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
 ```
 
 From there on, you have the choice between an assert on on object or array.
 
-```objectscript
+```ObjectScript
 set arrayAssertBuilder = builder.ThatActualObject(object)
 set objectAssertBuilder = builder.ThatActualArray(object)
 ```
@@ -51,7 +51,7 @@ Once constructed, you can configure your assertion. For example, you could:
 ### Assertion
 
 Lastly, you need to finish with an assertion.
-```objectscript
+```ObjectScript
 builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcted)
 ```
 
@@ -59,7 +59,7 @@ builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcte
 
 All example assume that this method exists to shorten
 the actual assert. You could, of course, register a macro for that, too.
-```objectscript
+```ObjectScript
 Method Assert() As hbt.utility.testing.AssertBuilder
 {
     return ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
@@ -67,81 +67,81 @@ Method Assert() As hbt.utility.testing.AssertBuilder
 ```
 
 Check if an object is defined
-```objectscript
+```ObjectScript
 do ..Assert().ThatActualObject(object).IsDefined()
 ```
 
 Check if an object is not defined
-```objectscript
+```ObjectScript
 do ..Assert().ThatActualObject(object).IsNotDefined()
 ```
 
 Check if two objects are equal
-```objectscript
+```ObjectScript
 set objectA = {"value": "ObjectScript Test"}
 do ..Assert().ThatActualObject(objectA).IsEqualTo(objectA)
 ```
 
 Check if two objects are equal while comparing their field values recursively
-```objectscript
+```ObjectScript
 set objectA = {"value": "ObjectScript Test"}
 set objectB = {"value": "ObjectScript Test"}
 do ..Assert().ThatActualObject(objectA).IsEqualTo(objectB)
 ```
 
 Check if two objects are equal while comparing their field values recursively
-```objectscript
+```ObjectScript
 set objectA = {"value": "ObjectScript Test"}
 set objectB = {"value": "ObjectScript Test"}
 do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison().IsEqualTo(objectB)
 ```
 
 Check if two objects are equal while ignoring a given field
-```objectscript
+```ObjectScript
 set objectA = {"value": "ObjectScript Test", "id": 1}
 set objectB = {"value": "ObjectScript Test", "id": 2}
 do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison().IgnoringField("id").IsEqualTo(objectB)
 ```
 
 Check that an array has 2 elements
-```objectscript
+```ObjectScript
 set array = ["A", "B"]
 do ..Assert().ThatActualArray(array).HasSize(2)
 ```
 
 Check that an array is empty
-```objectscript
+```ObjectScript
 set array = []
 do ..Assert().ThatActualArray(array).ToBeEmpty()
 ```
 
 Check that an array is not empty
-```objectscript
+```ObjectScript
 set array = ["A", "B"]
 do ..Assert().ThatActualArray(array).NotToBeEmpty()
 ```
 
 Check that an array contains a value
-```objectscript
+```ObjectScript
 set array = ["A", "B"]
 do ..Assert().ThatActualArray(array).ToContain("A")
 ```
 
 Check that an array does not contain a value
-```objectscript
+```ObjectScript
 set array = ["A", "B"]
 do ..Assert().ThatActualArray(array).NotToContain("C")
 ```
 
 Check that two arrays are equal
-```objectscript
+```ObjectScript
 set arrayA = ["A", "B"]
 set arrayB = ["A", "B"]
 do ..Assert().ThatActualArray(arrayA).ToEqual(arrayB)
 ```
 
 Check that two arrays contain the same elements, regardless of order
-```objectscript
+```ObjectScript
 set arrayA = ["A", "B"]
 set arrayB = ["B", "A"]
 do ..Assert().ThatActualArray(arrayA).IgnoringOrder().ToEqual(arrayB)
