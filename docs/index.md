@@ -20,7 +20,7 @@ AssertFailure:
 ## Limitations
 Assert-Objectscript started out as an assertion library for dynamic objects and arrays. As such, it is mostly intended to work with these two categories of objects in Intersystems.
 
-In general, it *should* work with almost any intersystems objects, excluding lists made with $listbuild. We would appreciate any form of feedback and also contributions to enhance this library to contain more assertions.
+We designed this library in a way that it *should* work with almost any intersystems objects, excluding lists made with $listbuild. We would appreciate any form of feedback and also contributions to enhance this library to contain more assertions.
 
 ## Basic Usage
 
@@ -38,7 +38,7 @@ Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``Ass
 set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
 ```
 
-From there on, you have the choice between an assert on on object or array.
+From there on, you have the choice between an assert on an object or an array.
 
 ```ObjectScript
 set arrayAssertBuilder = builder.ThatActualObject(object)
@@ -60,8 +60,99 @@ builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcte
 
 
 ## Available Assertions
-### Dynamic Objects
-### Dynamic Arrays
+
+All examples assume that this method exists to shorten
+the actual assert. You could, of course, register a macro for that, too.
+```ObjectScript
+Method Assert() As hbt.utility.testing.AssertBuilder
+{
+    return ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+}
+```
+
+### Arrays
+
+Check that an array has 2 elements
+```ObjectScript
+set array = ["A", "B"]
+do ..Assert().ThatActualArray(array).HasSize(2)
+```
+
+Check that an array is empty
+```ObjectScript
+set array = []
+do ..Assert().ThatActualArray(array).ToBeEmpty()
+```
+
+Check that an array is not empty
+```ObjectScript
+set array = ["A", "B"]
+do ..Assert().ThatActualArray(array).NotToBeEmpty()
+```
+
+Check that an array contains a value
+```ObjectScript
+set array = ["A", "B"]
+do ..Assert().ThatActualArray(array).ToContain("A")
+```
+
+Check that an array does not contain a value
+```ObjectScript
+set array = ["A", "B"]
+do ..Assert().ThatActualArray(array).NotToContain("C")
+```
+
+Check that two arrays are equal
+```ObjectScript
+set arrayA = ["A", "B"]
+set arrayB = ["A", "B"]
+do ..Assert().ThatActualArray(arrayA).ToEqual(arrayB)
+```
+
+Check that two arrays contain the same elements, regardless of order
+```ObjectScript
+set arrayA = ["A", "B"]
+set arrayB = ["B", "A"]
+do ..Assert().ThatActualArray(arrayA).IgnoringOrder().ToEqual(arrayB)
+```
+
 ### Objects
-### Lists
+
+Check if an object is defined
+```ObjectScript
+do ..Assert().ThatActualObject(object).IsDefined()
+```
+
+Check if an object is not defined
+```ObjectScript
+do ..Assert().ThatActualObject(object).IsNotDefined()
+```
+
+Check if two objects are equal
+```ObjectScript
+set objectA = {"value": "ObjectScript Test"}
+do ..Assert().ThatActualObject(objectA).IsEqualTo(objectA)
+```
+
+Check if two objects are equal while comparing their field values recursively
+```ObjectScript
+set objectA = {"value": "ObjectScript Test"}
+set objectB = {"value": "ObjectScript Test"}
+do ..Assert().ThatActualObject(objectA).IsEqualTo(objectB)
+```
+
+Check if two objects are equal while comparing their field values recursively
+```ObjectScript
+set objectA = {"value": "ObjectScript Test"}
+set objectB = {"value": "ObjectScript Test"}
+do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison().IsEqualTo(objectB)
+```
+
+Check if two objects are equal while ignoring a given field
+```ObjectScript
+set objectA = {"value": "ObjectScript Test", "id": 1}
+set objectB = {"value": "ObjectScript Test", "id": 2}
+do ..Assert().ThatActualObject(objectA).UsingFieldByFieldComparison().IgnoringField("id").IsEqualTo(objectB)
+```
+
 
