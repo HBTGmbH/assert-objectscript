@@ -16,7 +16,13 @@ AssertFailure:
 The goal of this library is to provide the developer with enough information to find the reason for a test failure without the need to debug the code.
 
 # Installation
-<TODO: Brief guide on how to use the ZPM package manager as soon as it's published>
+Assert-Objectscript is available in the [InterSystems Open Exchange](https://openexchange.intersystems.com/) and in the Open Exchange ZPM Registry.
+
+To install Assert-Objectscript, open an IRIS session into your IRIS instance and run the following command in the namespace you need
+
+```ObjectScript
+zpm "install assert-objectscript"
+```
 
 # Usage
 ## General Usage
@@ -155,22 +161,23 @@ To compile, build and upload to ZPM, follow these steps:
 2. Exec yourself into the container with an IRIS instance ``./open-iris-session.bat``(or ``./open-iris-session.sh`` on Linux)
 3. Go to ZPM terminal ``zpm``
 4. Load the source files into ZPM ``load /irisdev/app``
-5. Verify the MWL package ``assert-objectscript package -v``
-6. Set the registry to our ZPM registry ``repo -n registry -r -url <registry> -user <user> -pass <pass>`` (Make sure your registry url ends with a trailing /)
+5. Verify the assert-obectscript package ``assert-objectscript package -v``
+6. Set the registry to a ZPM registry ``repo -n registry -r -url <registry> -user <user> -pass <pass>`` (Make sure your registry url ends with a trailing /)
 7. Publish the package ``assert-objectscript -v publish``
 
 
 # Links
 * [Describing a module with ZPM](https://community.intersystems.com/post/describing-modulexml-objectscript-package-manager)
 * [Setting up your own ZPM registry](https://community.intersystems.com/post/setting-your-own-intersystems-objectscript-package-manager-registry)
+* [AssertJ](https://assertj.github.io/doc/)
 
 # For Developers
 See [Contributing](./CONTRIBUTING.MD)
 
 # Limitations and Planned Improvements
-1. Currently only tested on dynamic objects and dynmaic arrays. Should work for normal objects and lists, too (to be tested)
+1. Currently only tested on dynamic objects, dynamic arrays and %SystemBase objects; Lists made with $listbuild are not supported yet
 2. Only works in context of UnitTest
 3. Not many assertions implemented yet
-4. badly formatted dynamic objects
-5. badly formatted error messages (room for improvement here)
+4. Formatting of dynamic objects needs improvement
+5. Formatting of error messages in the IRIS test viewer needs improvement (optimized for console output)
 6. Assertions on basic types (%Integer, %String) not implemented yet
