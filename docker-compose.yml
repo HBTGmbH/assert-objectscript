@@ -10,6 +10,6 @@ services:
       - 52773:52773/tcp
       - 53773
     volumes:
-      - ~/iris.key:/usr/irissys/mgr/iris.key
+ #     - ~/iris.key:/usr/irissys/mgr/iris.key
       - ./:/irisdev/app
       - ./src/csp:/usr/irissys/mgr/csp/irisapp
