@@ -1,33 +1,33 @@
 /// Description
-Class hbt.utility.testing.RecursiveDynamicObjectComparatorTest Extends %UnitTest.TestCase
+Class utility.testing.RecursiveDynamicObjectComparatorTest Extends %UnitTest.TestCase
 {
 
 /// Description
 Method VerifyEqual(arrayOrObjectA, arrayOrObjectB) As %Status
 {
-    Set comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
     Set areEqual = comparator.areEqual(arrayOrObjectA, arrayOrObjectB)
-    Set arrayAString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(arrayOrObjectA)
-    Set arrayBString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(arrayOrObjectB)
+    Set arrayAString = ##class(utility.testing.ToStringUtil).ObjectToString(arrayOrObjectA)
+    Set arrayBString = ##class(utility.testing.ToStringUtil).ObjectToString(arrayOrObjectB)
     Do $$$AssertTrue(areEqual, " Expected "_arrayAString_" to equal "_arrayBString)
 }
 
 Method VerifyNotEqualWithOrder(arrayOrObjectA, arrayOrObjectB) As %Status
 {
-    Set comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
     Set comparator.IgnoreOrder = 0
     Set areEqual = comparator.areEqual(arrayOrObjectA, arrayOrObjectB)
-    Set arrayAString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(arrayOrObjectA)
-    Set arrayBString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(arrayOrObjectB)
+    Set arrayAString = ##class(utility.testing.ToStringUtil).ObjectToString(arrayOrObjectA)
+    Set arrayBString = ##class(utility.testing.ToStringUtil).ObjectToString(arrayOrObjectB)
     Do $$$AssertNotTrue(areEqual, " Expected "_arrayAString_" to equal "_arrayBString)
 }
 
 Method VerifyNotEqual(arrayOrObjectA, arrayOrObjectB) As %Status
 {
-    Set comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
     Set areEqual = comparator.areEqual(arrayOrObjectA, arrayOrObjectB)
-    Set arrayAString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(arrayOrObjectA)
-    Set arrayBString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(arrayOrObjectB)
+    Set arrayAString = ##class(utility.testing.ToStringUtil).ObjectToString(arrayOrObjectA)
+    Set arrayBString = ##class(utility.testing.ToStringUtil).ObjectToString(arrayOrObjectB)
     Do $$$AssertNotTrue(areEqual, " Expected "_arrayAString_" not to equal "_arrayBString)
 }
 
@@ -102,27 +102,27 @@ Method TestWithIgnoredFieldsShouldBeEqual() As %Status
     Set objectA = {"id": "1", "device": "CRT"}
     Set objectB = {"id": "2", "device": "CRT"}
     // do something
-    Set comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
     do comparator.AddIgnoredField("id")
     Set areEqual = comparator.areEqual(objectA, objectB)
-    Set objectAString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(objectA)
-    Set objectBString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(objectB)
+    Set objectAString = ##class(utility.testing.ToStringUtil).ObjectToString(objectA)
+    Set objectBString = ##class(utility.testing.ToStringUtil).ObjectToString(objectB)
     Do $$$AssertTrue(areEqual, " Expected "_objectAString_" to equal "_objectBString)
 }
 
 /// T
 Method TestWithNormalSimpleObjectShouldBeEqual() As %Status
 {
-    set inner = ##class(hbt.utility.testing.data.DummyTestClass).%New()
+    set inner = ##class(utility.testing.data.DummyTestClass).%New()
     set inner.TestProperty = "Value"
-    set objectA = ##class(hbt.utility.testing.data.NestedDummyTestClass).%New()
+    set objectA = ##class(utility.testing.data.NestedDummyTestClass).%New()
     set objectA.NestedObj = inner
-    set objectB = ##class(hbt.utility.testing.data.NestedDummyTestClass).%New()
+    set objectB = ##class(utility.testing.data.NestedDummyTestClass).%New()
     set objectB.NestedObj = inner
-    Set comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
     Set areEqual = comparator.areEqual(objectA, objectB)
-    Set objectAString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(objectA)
-    Set objectBString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(objectB)
+    Set objectAString = ##class(utility.testing.ToStringUtil).ObjectToString(objectA)
+    Set objectBString = ##class(utility.testing.ToStringUtil).ObjectToString(objectB)
     Do $$$AssertTrue(areEqual, " Expected "_objectAString_" to equal "_objectBString)
     return $$$OK
 }

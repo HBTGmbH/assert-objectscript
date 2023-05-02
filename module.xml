@@ -7,7 +7,7 @@
       <Version>1.0.0</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
-      <Resource Name="hbt.utility.testing.PKG"/>
+      <Resource Name="utility.testing.PKG"/>
       <SystemSetting Name="CSP.DefaultFileCharset" Value="UTF-8"/>
     </Module>
   </Document>

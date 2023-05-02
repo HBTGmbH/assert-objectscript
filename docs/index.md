@@ -35,7 +35,7 @@ Each assert follows this in the fashion of ``assert...thatActual...is...``
 Since Assert-Objectscript relies on the basic ObjectScript asserts and the ``AssertFailureViaMacro`` function, a test context with the ``%UnitTest.TestCase`` class must be available. So you will start any assertion like this.
 
 ```ObjectScript
-set builder = ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+set builder = ##class(utility.testing.AssertBuilder).AssertOnContext($THIS)
 ```
 
 From there on, you have the choice between an assert on an object or an array.
@@ -64,9 +64,9 @@ builder.ThatActualObject(actual).UsingFieldByFieldComparison().IsEqualTo(Exepcte
 All examples assume that this method exists to shorten
 the actual assert. You could, of course, register a macro for that, too.
 ```ObjectScript
-Method Assert() As hbt.utility.testing.AssertBuilder
+Method Assert() As utility.testing.AssertBuilder
 {
-    return ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+    return ##class(utility.testing.AssertBuilder).AssertOnContext($THIS)
 }
 ```
 

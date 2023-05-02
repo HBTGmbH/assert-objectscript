@@ -1,5 +1,5 @@
 /// 
-Class hbt.utility.testing.ToStringUtil
+Class utility.testing.ToStringUtil
 {
 
 /// Description
@@ -19,7 +19,7 @@ ClassMethod DynamicObjectToString(obj As %Library.DynamicObject) As %Status
             
             Set value = "n/a"
         } else {
-            Set value = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+            Set value = ##class(utility.testing.ToStringUtil).ObjectToString(value)
         }
         Set result = result_key_": "_value
         Set first = 1
@@ -36,7 +36,7 @@ ClassMethod DynamicArrayToString(obj As %Library.DynamicArray) As %Status
         If '(first=0) {
             Set result = result_", "
         }
-        Set formattedValue = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+        Set formattedValue = ##class(utility.testing.ToStringUtil).ObjectToString(value)
         Set result = result_formattedValue
         Set first = 1
     }
@@ -59,7 +59,7 @@ ClassMethod SystemBaseObjectToString(obj As %Library.SystemBase) As %Status
         } elseIf (value="") {
             Set value = "n/a"
         } else {
-            Set value = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+            Set value = ##class(utility.testing.ToStringUtil).ObjectToString(value)
         }
         Set result = result_name_": "_value
     }
@@ -72,11 +72,11 @@ ClassMethod ObjectToString(obj As %Library.SystemBase) As %String
     If ($ISOBJECT(obj)) {
         Set name = obj.%ClassName(1)
         If (name="%Library.DynamicObject") {
-            Quit ##class(hbt.utility.testing.ToStringUtil).DynamicObjectToString(obj)
+            Quit ##class(utility.testing.ToStringUtil).DynamicObjectToString(obj)
         } ElseIf (name="%Library.DynamicArray") {
-            Quit ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(obj)
+            Quit ##class(utility.testing.ToStringUtil).DynamicArrayToString(obj)
         } Else {
-            Quit ##class(hbt.utility.testing.ToStringUtil).SystemBaseObjectToString(obj)
+            Quit ##class(utility.testing.ToStringUtil).SystemBaseObjectToString(obj)
         }
     } else {
         return obj

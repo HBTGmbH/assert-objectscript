@@ -1,10 +1,10 @@
-Class hbt.utility.testing.ListAssertTest Extends %UnitTest.TestCase
+Class utility.testing.ListAssertTest Extends %UnitTest.TestCase
 {
 
 /// Description
 Method Assert() As %Status
 {
-    return ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+    return ##class(utility.testing.AssertBuilder).AssertOnContext($THIS)
 }
 
 /// Description

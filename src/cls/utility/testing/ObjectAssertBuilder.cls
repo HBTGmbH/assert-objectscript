@@ -1,5 +1,5 @@
 /// Description
-Class hbt.utility.testing.ObjectAssertBuilder Extends %SystemBase
+Class utility.testing.ObjectAssertBuilder Extends %SystemBase
 {
 
 /// The test context. This is necessary for the assert to work properly
@@ -18,9 +18,9 @@ Property Expected As %DynamicObject;
 
 Property Actual As %DynamicObject;
 
-Property Comparator As hbt.utility.testing.DynamicObjectComparator;
+Property Comparator As utility.testing.DynamicObjectComparator;
 
-ClassMethod BuildInstance(testContext As %UnitTest.TestCase, actual As %DynamicObject) As hbt.utility.testing.ObjectAssertBuilder
+ClassMethod BuildInstance(testContext As %UnitTest.TestCase, actual As %DynamicObject) As utility.testing.ObjectAssertBuilder
 {
     Set builder = ##class(ObjectAssertBuilder).%New()
     Set builder.IgnoredFields = []
@@ -31,14 +31,14 @@ ClassMethod BuildInstance(testContext As %UnitTest.TestCase, actual As %DynamicO
 }
 
 /// Description
-Method IgnoringFields(fieldNames As %DynamicArray) As hbt.utility.testing.ObjectAssertBuilder
+Method IgnoringFields(fieldNames As %DynamicArray) As utility.testing.ObjectAssertBuilder
 {
     Set ..IgnoredFields = fieldNames
     Return $THIS
 }
 
 /// Description
-Method UsingFieldByFieldComparison() As hbt.utility.testing.ObjectAssertBuilder
+Method UsingFieldByFieldComparison() As utility.testing.ObjectAssertBuilder
 {
     Set ..UseFieldByFieldComparison = 1
     Return $THIS
@@ -55,10 +55,10 @@ Method InitComparator() As %Status [ Private ]
     }
     // If we are using field by field comparison, we need a RecursiveDynamicObjectComparator comparator
     If (..UseFieldByFieldComparison) {
-        Set ..Comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+        Set ..Comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
         Set ..Comparator.IgnoredFields = ..IgnoredFields
     } Else {
-        Set ..Comparator = ##class(hbt.utility.testing.ObjectEqualityComparator).%New()
+        Set ..Comparator = ##class(utility.testing.ObjectEqualityComparator).%New()
     }
 }
 
@@ -77,7 +77,7 @@ Method ToHaveProperty(key As %String) As %Status
 {
     set isDefined = ..IsPropertyDefined(..Actual, key)
     If 'isDefined {
-        Set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
+        Set actualAsString = $$$NL_##class(utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
         Set msg = "   Expected"_actualAsString_"   to have the property "_key
         Do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -89,7 +89,7 @@ Method NotToHaveProperty(key As %String) As %Status
 {
     set isDefined = ..IsPropertyDefined(..Actual, key)
     If isDefined {
-        Set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
+        Set actualAsString = $$$NL_##class(utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
         Set msg = "   Expected"_actualAsString_"   to not have the property "_key
         Do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -100,7 +100,7 @@ Method NotToHaveProperty(key As %String) As %Status
 Method IsNotDefined() As %Status
 {
     If '(..Actual = $$$NULLOREF) {
-        Set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        Set actualAsString = ##class(utility.testing.ToStringUtil).ObjectToString(..Actual)
         Set msg = "Expected "_actualAsString_" to be undefined"
         Do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -112,8 +112,8 @@ Method IsEqualTo(expected) As %Status
 {
     Do ..InitComparator()
     If '(..Comparator.areEqual(..Actual, expected)) {
-        Set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
-        Set expectedAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).ObjectToString(expected)_$$$NL
+        Set actualAsString = $$$NL_##class(utility.testing.ToStringUtil).ObjectToString(..Actual)_$$$NL
+        Set expectedAsString = $$$NL_##class(utility.testing.ToStringUtil).ObjectToString(expected)_$$$NL
         Set msg = "   Expected:"_actualAsString_"   to be equal to:"_expectedAsString_$$$NL
         Do ..TestContext.AssertFailureViaMacro(msg)
     }

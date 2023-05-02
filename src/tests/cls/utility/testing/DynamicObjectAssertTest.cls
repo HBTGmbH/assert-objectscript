@@ -1,10 +1,10 @@
-Class hbt.utility.testing.DynamicObjectAssertTest Extends %UnitTest.TestCase
+Class utility.testing.DynamicObjectAssertTest Extends %UnitTest.TestCase
 {
 
 /// Description
-Method Assert() As hbt.utility.testing.ObjectAssertBuilder
+Method Assert() As utility.testing.ObjectAssertBuilder
 {
-    return ##class(hbt.utility.testing.AssertBuilder).AssertOnContext($THIS)
+    return ##class(utility.testing.AssertBuilder).AssertOnContext($THIS)
 }
 
 Method TestShouldPassWithDefinedObjectForDefinedCheck() As %Status

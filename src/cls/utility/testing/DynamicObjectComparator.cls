@@ -1,5 +1,5 @@
 /// Description
-Class hbt.utility.testing.DynamicObjectComparator Extends %SystemBase [ Abstract ]
+Class utility.testing.DynamicObjectComparator Extends %SystemBase [ Abstract ]
 {
 
 /// Description

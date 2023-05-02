@@ -1,4 +1,4 @@
-Class hbt.utility.testing.PropertyUtil Extends %SystemBase
+Class utility.testing.PropertyUtil Extends %SystemBase
 {
 
 /// Description

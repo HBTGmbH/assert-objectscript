@@ -1,5 +1,5 @@
 /// Description
-Class hbt.utility.testing.ArrayAssertBuilder Extends %SystemBase
+Class utility.testing.ArrayAssertBuilder Extends %SystemBase
 {
 
 /// Defines that we are going to compare values in this array using recursive field by field comparison, not
@@ -21,10 +21,10 @@ Property Expected As %DynamicArray;
 
 Property Actual As %DynamicArray;
 
-Property Comparator As hbt.utility.testing.DynamicObjectComparator;
+Property Comparator As utility.testing.DynamicObjectComparator;
 
 /// This is supposed to be called from the AssertBuilder. Do not call yourself.
-ClassMethod BuildInstance(testContext As %UnitTest.TestCase, actual As %DynamicArray) As hbt.utility.testing.ArrayAssertBuilder
+ClassMethod BuildInstance(testContext As %UnitTest.TestCase, actual As %DynamicArray) As utility.testing.ArrayAssertBuilder
 {
     set builder = ##class(ArrayAssertBuilder).%New()
     set builder.IgnoredFields = []
@@ -35,14 +35,14 @@ ClassMethod BuildInstance(testContext As %UnitTest.TestCase, actual As %DynamicA
 }
 
 /// Description
-Method IgnoringField(fieldName As %String) As hbt.utility.testing.ArrayAssertBuilder
+Method IgnoringField(fieldName As %String) As utility.testing.ArrayAssertBuilder
 {
     do ..IgnoredFields.%Push(fieldName)
     return $THIS
 }
 
 /// Description
-Method IgnoringFields(fieldNames As %DynamicArray) As hbt.utility.testing.ArrayAssertBuilder
+Method IgnoringFields(fieldNames As %DynamicArray) As utility.testing.ArrayAssertBuilder
 {
     set iterator = fieldNames.%GetIterator()
     While iterator.%GetNext(.key, .value) {
@@ -52,14 +52,14 @@ Method IgnoringFields(fieldNames As %DynamicArray) As hbt.utility.testing.ArrayA
 }
 
 /// Description
-Method IgnoringOrder() As hbt.utility.testing.ArrayAssertBuilder
+Method IgnoringOrder() As utility.testing.ArrayAssertBuilder
 {
     set ..IgnoreOrder = 1
     return $THIS
 }
 
 /// Description
-Method UsingFieldByFieldComparison() As hbt.utility.testing.ArrayAssertBuilder
+Method UsingFieldByFieldComparison() As utility.testing.ArrayAssertBuilder
 {
     Set ..UseFieldByFieldComparison = 1
     return $THIS
@@ -87,11 +87,11 @@ Method InitComparator() As %Status [ Private ]
     }
     // If we are using field by field comparison, we need a RecursiveDynamicObjectComparator comparator
     If (..UseFieldByFieldComparison) {
-        set ..Comparator = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+        set ..Comparator = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
         set ..Comparator.IgnoreOrder = ..IgnoreOrder
         set ..Comparator.IgnoredFields = ..IgnoredFields
     } else {
-        set ..Comparator = ##class(hbt.utility.testing.ObjectEqualityComparator).%New()
+        set ..Comparator = ##class(utility.testing.ObjectEqualityComparator).%New()
     }
 }
 
@@ -100,9 +100,9 @@ Method AssertIgnoringOrder() [ Private ]
     set expectedIterator = ..Expected.%GetIterator()
     while expectedIterator.%GetNext(.key, .value) {
         If '(..IsContainedInArray(..Actual, value)) {
-            set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-            set expectedAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)
-            set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+            set actualAsString = ##class(utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
+            set expectedAsString = ##class(utility.testing.ToStringUtil).DynamicArrayToString(..Expected)
+            set missingAsString = ##class(utility.testing.ToStringUtil).ObjectToString(value)
             set msg = "Expected "_actualAsString_" to equal "_expectedAsString_" but did not find "_missingAsString_" while ignoring order of fields"
             do ..TestContext.AssertFailureViaMacro(msg)
         }
@@ -110,9 +110,9 @@ Method AssertIgnoringOrder() [ Private ]
     set actualIterator = ..Actual.%GetIterator()
     while actualIterator.%GetNext(.key, .value) {
         If '(..IsContainedInArray(..Expected, value)) {
-            set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-            set expectedAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)
-            set superflousAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+            set actualAsString = ##class(utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
+            set expectedAsString = ##class(utility.testing.ToStringUtil).DynamicArrayToString(..Expected)
+            set superflousAsString = ##class(utility.testing.ToStringUtil).ObjectToString(value)
             set msg = "Expected "_actualAsString_" to equal "_expectedAsString_", but found superflous element "_superflousAsString_" while ignoring order of fields"
             do ..TestContext.AssertFailureViaMacro(msg)
         }
@@ -126,16 +126,16 @@ Method AssertKeepingOrder() [ Private ]
     while expectedIterator.%GetNext(.key, .value) {
         set otherValue = ..Actual.%Get(key)
         If ('($DATA(otherValue))) || (otherValue = "") {
-            set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)_$$$NL
-            set expectedAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)_$$$NL
-            set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+            set actualAsString = $$$NL_##class(utility.testing.ToStringUtil).DynamicArrayToString(..Actual)_$$$NL
+            set expectedAsString = $$$NL_##class(utility.testing.ToStringUtil).DynamicArrayToString(..Expected)_$$$NL
+            set missingAsString = ##class(utility.testing.ToStringUtil).ObjectToString(value)
             set msg = "Expected "_expectedAsString_" to equal "_actualAsString_" but did not find "_missingAsString_" at index "_key
             do ..TestContext.AssertFailureViaMacro(msg)
         } elseif '(..Comparator.areEqual(value, otherValue)) {
-            set actualAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)_$$$NL
-            set expectedAsString = $$$NL_##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Expected)_$$$NL
-            set expectedValueString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
-            set actualValueString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(otherValue)
+            set actualAsString = $$$NL_##class(utility.testing.ToStringUtil).DynamicArrayToString(..Actual)_$$$NL
+            set expectedAsString = $$$NL_##class(utility.testing.ToStringUtil).DynamicArrayToString(..Expected)_$$$NL
+            set expectedValueString = ##class(utility.testing.ToStringUtil).ObjectToString(value)
+            set actualValueString = ##class(utility.testing.ToStringUtil).ObjectToString(otherValue)
             set msg = $$$NL_"   Expected "_actualAsString_"    to equal "_expectedAsString_"    but element at index "_key_" mismatches:"_$$$NL
             set msg = msg_"Expected "_expectedValueString_" to equal "_actualValueString
             do ..TestContext.AssertFailureViaMacro(msg)
@@ -144,7 +144,7 @@ Method AssertKeepingOrder() [ Private ]
     Quit $$$OK
 }
 
-Method ToEqual(expected As %DynamicArray) As hbt.utility.testing.ArrayAssertBuilder
+Method ToEqual(expected As %DynamicArray) As utility.testing.ArrayAssertBuilder
 {
   
     set ..Expected = expected
@@ -161,8 +161,8 @@ Method ToContain(value) As %Status
 {
     do ..InitComparator()
     If '(..IsContainedInArray(..Actual, value)) {
-        Set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-        Set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+        Set actualAsString = ##class(utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
+        Set missingAsString = ##class(utility.testing.ToStringUtil).ObjectToString(value)
         Set msg = $$$NL_"   Expected "_$$$NL_actualAsString_$$$NL_"   to contain "_$$$NL_missingAsString_$$$NL_$$$NL
         Do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -173,8 +173,8 @@ Method NotToContain(value) As %Status
 {
     do ..InitComparator()
     If (..IsContainedInArray(..Actual, value)) {
-        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
-        set missingAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(value)
+        set actualAsString = ##class(utility.testing.ToStringUtil).DynamicArrayToString(..Actual)
+        set missingAsString = ##class(utility.testing.ToStringUtil).ObjectToString(value)
         Set msg = $$$NL_"   Expected "_$$$NL_actualAsString_$$$NL_"   not to contain "_$$$NL_missingAsString_$$$NL_$$$NL
         do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -185,7 +185,7 @@ Method HasSize(expectedSize As %Integer) As %Status
 {
     set actualSize = ..Actual.%Size()
     If '(actualSize = expectedSize) {
-        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        set actualAsString = ##class(utility.testing.ToStringUtil).ObjectToString(..Actual)
         set msg = $$$NL_"   Expected "_$$$NL_actualAsString_":"_$$$NL_"    To have size "_expectedSize_" but was "_actualSize_$$$NL_$$$NL
         do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -196,7 +196,7 @@ Method ToBeEmpty() As %Status
 {
     set actualSize = ..Actual.%Size()
     If '(actualSize = 0) {
-        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        set actualAsString = ##class(utility.testing.ToStringUtil).ObjectToString(..Actual)
         set msg = $$$NL_"   Expected "_$$$NL_actualAsString_":"_$$$NL_"    To be empty but has "_actualSize_ "elements" _$$$NL_$$$NL
         do ..TestContext.AssertFailureViaMacro(msg)
     }
@@ -207,7 +207,7 @@ Method NotToBeEmpty() As %Status
 {
     set actualSize = ..Actual.%Size()
     If (actualSize = 0) {
-        set actualAsString = ##class(hbt.utility.testing.ToStringUtil).ObjectToString(..Actual)
+        set actualAsString = ##class(utility.testing.ToStringUtil).ObjectToString(..Actual)
         set msg = $$$NL_"   Expected "_$$$NL_actualAsString_":"_$$$NL_"    Not to be empty but has "_actualSize_ "elements" _$$$NL_$$$NL
         do ..TestContext.AssertFailureViaMacro(msg)
     }

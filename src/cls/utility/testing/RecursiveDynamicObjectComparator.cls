@@ -1,5 +1,5 @@
 /// 
-Class hbt.utility.testing.RecursiveDynamicObjectComparator Extends hbt.utility.testing.DynamicObjectComparator
+Class utility.testing.RecursiveDynamicObjectComparator Extends utility.testing.DynamicObjectComparator
 {
 
 /// Defines if order should be ignored when comparing arrays. Defaults to 1
@@ -76,8 +76,8 @@ Method areEqualDynamicObjects(expected As %DynamicObject, actual As %DynamicObje
 Method areEqualObjects(expected As %SystemBase, actual As %SystemBase) As %Status
 {
     // Array of {key: "<prop-name>", value: <prop-value>}
-    set expcetedProperties =  ##class(hbt.utility.testing.PropertyUtil).GetProperties(expected)
-    set acutalProperties =  ##class(hbt.utility.testing.PropertyUtil).GetProperties(actual)
+    set expcetedProperties =  ##class(utility.testing.PropertyUtil).GetProperties(expected)
+    set acutalProperties =  ##class(utility.testing.PropertyUtil).GetProperties(actual)
     set expectedIterator = expcetedProperties.%GetIterator()
     set actualIterator = acutalProperties.%GetIterator()
     // Make sure each value in 'actual' is represented as the same value in 'expected'
@@ -201,7 +201,7 @@ ClassMethod DebugIt() As %Status
 {
     Set arrayA = ["A", "B"]
     Set arrayB = ["A"]
-    Set instance = ##class(hbt.utility.testing.RecursiveDynamicObjectComparator).%New()
+    Set instance = ##class(utility.testing.RecursiveDynamicObjectComparator).%New()
     do instance.areEqual(arrayA, arrayB)
 }
 

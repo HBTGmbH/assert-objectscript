@@ -1,4 +1,4 @@
-Class hbt.utility.testing.ObjectEqualityComparator Extends hbt.utility.testing.DynamicObjectComparator
+Class utility.testing.ObjectEqualityComparator Extends utility.testing.DynamicObjectComparator
 {
 
 /// Description
